@@ -1,4 +1,4 @@
-# Brat Subtitle Studio
+# Liquidated Subtitle Studio
 
 Локальное Windows-приложение для создания субтитров из трека:
 
