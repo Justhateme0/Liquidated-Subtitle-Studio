@@ -18,6 +18,19 @@ def ffmpeg_available() -> bool:
     return FFMPEG_BIN.exists() and FFPROBE_BIN.exists()
 
 
+def hidden_subprocess_kwargs() -> dict[str, object]:
+    if os.name != "nt":
+        return {}
+
+    startupinfo = subprocess.STARTUPINFO()
+    startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+    startupinfo.wShowWindow = subprocess.SW_HIDE
+    return {
+        "creationflags": subprocess.CREATE_NO_WINDOW,
+        "startupinfo": startupinfo,
+    }
+
+
 def ensure_ffmpeg() -> None:
     if ffmpeg_available():
         return
@@ -64,7 +77,13 @@ def configure_ffmpeg_runtime() -> None:
 
 def run_ffmpeg(command: list[str]) -> subprocess.CompletedProcess[str]:
     configure_ffmpeg_runtime()
-    return subprocess.run(command, capture_output=True, text=True, check=True)
+    return subprocess.run(
+        command,
+        capture_output=True,
+        text=True,
+        check=True,
+        **hidden_subprocess_kwargs(),
+    )
 
 
 def probe_duration(media_path: Path) -> float | None:
@@ -86,6 +105,7 @@ def probe_duration(media_path: Path) -> float | None:
         capture_output=True,
         text=True,
         check=True,
+        **hidden_subprocess_kwargs(),
     )
     payload = json.loads(result.stdout)
     duration = payload.get("format", {}).get("duration")

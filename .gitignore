@@ -18,3 +18,5 @@ storage/projects/
 storage/app.db
 tools/ffmpeg/
 tools/*.zip
+build/
+dist/

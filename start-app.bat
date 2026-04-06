@@ -53,8 +53,8 @@ if not exist "%FRONTEND_DIR%\node_modules" (
 )
 
 echo [5/5] Starting backend and frontend...
-start "Brat Subtitle Studio Backend" cmd /k call "%RUN_BACKEND%"
-start "Brat Subtitle Studio Frontend" cmd /k call "%RUN_FRONTEND%"
+start "Liquidated Subtitle Studio Backend" cmd /k call "%RUN_BACKEND%"
+start "Liquidated Subtitle Studio Frontend" cmd /k call "%RUN_FRONTEND%"
 
 echo.
 echo Backend:  http://127.0.0.1:8000

@@ -18,7 +18,7 @@ from ..config import (
 )
 from ..database import get_job, get_project_row, patch_job, upsert_project
 from ..types import JobDocument, JobStatus, ProjectDocument, ProjectStatus, now_iso
-from .ffmpeg import configure_ffmpeg_runtime
+from .ffmpeg import configure_ffmpeg_runtime, hidden_subprocess_kwargs
 
 LEGACY_POSITION_X = DEFAULT_CANVAS_WIDTH / 2
 LEGACY_POSITION_Y = 892.0
@@ -329,6 +329,7 @@ def store_background(project_id: str, filename: str, payload: bytes) -> tuple[st
                 capture_output=True,
                 text=True,
                 env=dict(os.environ),
+                **hidden_subprocess_kwargs(),
             )
             if completed.returncode != 0:
                 raise RuntimeError(

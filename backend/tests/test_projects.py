@@ -149,7 +149,7 @@ def test_store_background_normalizes_video_to_mp4(tmp_path, monkeypatch):
     monkeypatch.setattr("backend.app.services.projects.PROJECTS_DIR", tmp_path / "projects")
     monkeypatch.setattr("backend.app.services.projects.configure_ffmpeg_runtime", lambda: None)
 
-    def fake_run(command, capture_output, text, env):
+    def fake_run(command, capture_output, text, env, **kwargs):
         output_path = Path(command[-1])
         output_path.write_bytes(b"mp4")
 

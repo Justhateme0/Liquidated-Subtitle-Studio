@@ -7,8 +7,18 @@ import type {
   ExportPreset,
 } from './types'
 
-const configuredBase = import.meta.env.VITE_API_BASE?.replace(/\/$/, '')
-export const API_BASE = configuredBase || 'http://127.0.0.1:8000'
+function detectApiBase() {
+  const configuredBase = import.meta.env.VITE_API_BASE?.replace(/\/$/, '')
+  if (configuredBase) {
+    return configuredBase
+  }
+  if (typeof window !== 'undefined' && window.location.origin.startsWith('http')) {
+    return window.location.origin
+  }
+  return 'http://127.0.0.1:8000'
+}
+
+export const API_BASE = detectApiBase()
 
 function withVersion(url: string, version?: string | null) {
   if (!url || !version) {
